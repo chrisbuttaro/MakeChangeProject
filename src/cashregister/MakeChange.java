@@ -1,10 +1,46 @@
 package cashregister;
+
 import java.util.Scanner;
+import java.text.DecimalFormat; 
+
 public class MakeChange {
 	public static void main(String[] args) {
+   
+        countChange(userInput());
+       
+	}// end main
 	
-	Scanner keyboard=new Scanner(System.in);
-	double total=0.0, tender=0.0;
+
+	static float userInput(){
+		DecimalFormat twoPlaces=new DecimalFormat("0.00");
+	    Scanner  keyboard=new Scanner(System.in);
+		float total=0.0f, tender=0.0f;
+		
+		System.out.print("Enter the total: ");
+		total=keyboard.nextFloat();
+		
+		System.out.print("Enter amount tendered: ");
+		tender=keyboard.nextFloat(); 
+		keyboard.close(); 
+		
+		
+		total=roundTwoDecimal(total); 
+		total=(tender-total); 
+		System.out.println("");
+		System.out.println("Change Due: $" + twoPlaces.format(total));
+		System.out.println("");
+		
+		if (total < 0){
+			System.out.println("Insufficent Tender");
+		} 
+		if(total == 0.0){
+			System.out.println("No Change Due");
+		}
+		return total;
+	}//end userInput
+	
+	static void countChange(float Total){
+	
 	int twenty=0; 
 	int ten=0; 	
 	int five=0; 
@@ -14,85 +50,106 @@ public class MakeChange {
 	int nickel=0; 
 	int penny=0; 
 	
-	System.out.print("Enter the total :");
-	total=keyboard.nextDouble();
-	
-	System.out.print("Enter amount tendered :");
-	tender=keyboard.nextDouble(); 
-	
-	
-	total=(tender-total); 
-	System.out.println(+total);
-	total = (total+.005)*100;
-	total = (int) total;
-	total = total/100;
-	System.out.println(+total);
-	
-	while(total >= .01 ){
-	
+	while(Total > 0 ){
 		
-		if (total > 20){
+		Total=roundTwoDecimal(Total); 
+		
+		if (Total >= 20f){
 			twenty++;
-			total=total-20;
+			Total=Total-20f;
 		}
-		
-		if (total >= 10 && total <20 ){
+
+		if (Total >= 10f && Total <20f ){
 			ten++; 
-			total=total-10;
+			Total=Total-10;
 		}
-		if (total >= 5 && total <10 ){
+		if (Total >= 5f && Total <10f ){
 			five++; 
-			total=total-5;
+			Total=Total-5;
 		}
-		if (total >= 1 && total <5 ){
+		if (Total >= 1f && Total <5f ){
 			one++;
-			total=total-1;
-			System.out.println("one");
+			Total=Total-1;
 		}
-		if (total >= 0.25 && total <1 ){
-			System.out.println("quarter");
+		if (Total >= 0.25f && Total <1f ){
 			quarter++; 
-			total=total-0.25;
+			Total=Total-0.25f;
 		}
-		if (total >= 0.1 && total < 0.25 ){
+		if (Total >= 0.1f && Total < 0.25f ){
 			dime++; 
-			total=total-0.1;
+			Total=Total-0.1f;
 		}	
-		if (total >= 0.05 && total <0.1 ){
-			System.out.println("Nickel");
+		if (Total >= 0.05f && Total <0.1f ){
 			nickel++; 
-			total=total-0.05;
+			Total=Total-0.05f;
 		}
 		
-		if (total >= 0.01 && total <0.05 ){
-			System.out.println("Penny");
+		if (Total >=0.01f && Total <0.05f ){
 			penny++; 
-			total=total-0.01; 
-			System.out.println(total);
+			Total=Total-0.01f; 
 		}
 		
-	}// end while
+		
+	}//end while	
+
 	
-	System.out.println("Change = ");
-	System.out.println(twenty+ " x $20");
-	System.out.println(ten+ " x $10");
-	System.out.println(five+ " x $5");
-	System.out.println(one+ " x $1");
-	System.out.println(quarter+ " x Quarter");
-	System.out.println(dime+ " x Dime");
-	System.out.println(nickel+ " x Nickel");
-	System.out.println(penny+ " x Penny");	
-		
+	if(twenty>1){
+	System.out.println(twenty+ " Twenty Dollar Bills ");
+		}else if(twenty ==1){
+		System.out.println(twenty+ " Twenty Dollar Bill ");
+		}
 	
+	if(ten>1){
+		System.out.println(ten+ " Ten Dollar Bills ");
+		}else if(ten ==1){
+		System.out.println(ten+ " Ten Dollar Bill ");
+		}
+	
+	if(five>1){
+		System.out.println(five+ " Five Dollar Bills ");
+		}else if(five==1){
+		System.out.println(five+" Five Dollar Bill ");
+		}
+
+	if(one>1){
+		System.out.println(one+" One Dollar Bills ");
+		}else if(one==1){
+		System.out.println(one+" One Dollar Bill ");
+		}
+
+	if(quarter>1){
+		System.out.println(quarter+" Quarters ");
+		}else if(quarter==1){
+		System.out.println(quarter+" Quarter ");
+		}
+
+	if(dime>1){
+		System.out.println(dime+" Dimes");
+		}else if(dime==1){
+		System.out.println(dime+" Dime");
+		}
+	if(nickel>1){
+		System.out.println(nickel+" Nickels ");
+		}else if(nickel==1){
+		System.out.println(nickel+" Nickel ");
+		}
+
+	if(penny>1){
+		System.out.println(penny+" Pennies ");
+	}else if(penny==1){
+		System.out.println(penny+" Penny ");
 		
-		
-
-		//The user is prompted asking for the price of the item.
-		//The user is then prompted asking how much money was tendered by the customer.
-		//Display an appropriate message if the customer provided too little money or the exact amount.
-		//If the amount tendered is more than the cost of the item, display the number of bills and coins that should be given to the customer.
+	}
 
 
-	}//end main
+	
+}///end countBills
+	static float roundTwoDecimal(float Total) {
+		Total = (Total + .005f) * 100;
+		Total = (int) Total;
+		Total = Total / 100;
+		return Total;
+	}// end roundTwoDecimal
+
 
 }
